@@ -1,0 +1,59 @@
+{
+  "name": "vue-ssr",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "lint": "vue-cli-service lint",
+    "serve:client": "vue-cli-service serve --mode client",
+    "build:client": "vue-cli-service build --mode client",
+    "lint:client": "vue-cli-service lint --mode client",
+    "serve:server": "vue-cli-service serve --mode server",
+    "build:server": "vue-cli-service build --mode server",
+    "lint:server": "vue-cli-service lint --mode server"
+  },
+  "dependencies": {
+    "core-js": "^2.6.5",
+    "express": "^4.17.1",
+    "vue": "^2.6.10",
+    "vue-router": "^3.1.3",
+    "vue-server-renderer": "^2.6.10",
+    "vuex": "^3.1.1"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "^3.11.0",
+    "@vue/cli-plugin-eslint": "^3.11.0",
+    "@vue/cli-service": "^3.11.0",
+    "babel-eslint": "^10.0.1",
+    "eslint": "^5.16.0",
+    "eslint-plugin-vue": "^5.0.0",
+    "uglifyjs-webpack-plugin": "^2.2.0",
+    "vue-template-compiler": "^2.6.10",
+    "webpack": "^4.39.3",
+    "webpack-node-externals": "^1.7.2"
+  },
+  "eslintConfig": {
+    "root": true,
+    "env": {
+      "node": true
+    },
+    "extends": [
+      "plugin:vue/essential",
+      "eslint:recommended"
+    ],
+    "rules": {},
+    "parserOptions": {
+      "parser": "babel-eslint"
+    }
+  },
+  "postcss": {
+    "plugins": {
+      "autoprefixer": {}
+    }
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions"
+  ]
+}
