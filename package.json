@@ -6,11 +6,11 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
+    "build:client": "vue-cli-service build --no-clean --mode client",
+    "build:server": "vue-cli-service build --no-clean --mode server",
     "serve:client": "vue-cli-service serve --mode client",
-    "build:client": "vue-cli-service build --mode client",
-    "lint:client": "vue-cli-service lint --mode client",
     "serve:server": "vue-cli-service serve --mode server",
-    "build:server": "vue-cli-service build --mode server",
+    "lint:client": "vue-cli-service lint --mode client",
     "lint:server": "vue-cli-service lint --mode server"
   },
   "dependencies": {
@@ -30,7 +30,6 @@
     "eslint-plugin-vue": "^5.0.0",
     "uglifyjs-webpack-plugin": "^2.2.0",
     "vue-template-compiler": "^2.6.10",
-    "webpack": "^4.39.3",
     "webpack-node-externals": "^1.7.2"
   },
   "eslintConfig": {

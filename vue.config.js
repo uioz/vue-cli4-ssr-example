@@ -1,33 +1,28 @@
 const webpackNodeExternals = require('webpack-node-externals');
 const VueSSRServerPlugin = require('vue-server-renderer/server-plugin');
 const VueSSRClientPlugin = require('vue-server-renderer/client-plugin');
-const webpack = require('webpack');
 // const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
 module.exports = {
   configureWebpack: (config) => {
 
-
-    // const commonWebpackConfig = {
-    //   optimization: {
-    //     minimizer: [new UglifyJsPlugin({
-    //       extractComments: true,
-    //     })]
-    //   }
-    // };
-
     if (process.env.BUNDLE_TARGET === 'CLIENT') {
+
+      /**
+       * **注意**: 原本 Vue-SSR 指南使用的是 CommonsChunkPlugin 这里替换成了 webpack4 中的 runtimeChunk
+       * 重要信息：这将 webpack 运行时分离到一个引导 chunk 中，
+       * 以便可以在之后正确注入异步 chunk。
+       * 这也为你的 应用程序/vendor 代码提供了更好的缓存。
+       */
+      config.optimization = {
+        runtimeChunk: {
+          name: 'manifest'
+        }
+      };
+
       return {
-        // ...commonWebpackConfig,
         entry: './src/main.js',
         plugins: [
-          // 重要信息：这将 webpack 运行时分离到一个引导 chunk 中，
-          // 以便可以在之后正确注入异步 chunk。
-          // 这也为你的 应用程序/vendor 代码提供了更好的缓存。
-          new webpack.optimize.CommonsChunkPlugin({
-            name: "manifest",
-            minChunks: Infinity
-          }),
           // 此插件在输出目录中
           // 生成 `vue-ssr-client-manifest.json`。
           new VueSSRClientPlugin()
@@ -39,7 +34,6 @@ module.exports = {
       delete config.optimization.splitChunks;
 
       return {
-        // ...commonWebpackConfig,
         // 将 entry 指向应用程序的 server entry 文件
         entry: './src/main-ssr.js',
         // 这允许 webpack 以 Node 适用方式(Node-appropriate fashion)处理动态导入(dynamic import)，
