@@ -64,5 +64,4 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 # TODOS
 
 1. 热重载
-2. 注释移除
-3. 找出bug
+2. 找出 无法渲染的bug

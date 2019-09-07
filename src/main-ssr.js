@@ -21,17 +21,19 @@ export default (context) => new Promise((resolve, reject) => {
       // 2. 迭代组件并且调用组件的 asyncData 方法, 将数据移动到 store 上
       Promise.all(
         matchedComponents.map(
-          component => component.asyncData ? component.asyncData(store, router) : undefined
+          component => component.asyncData ? component.asyncData(store, router.currentRoute) : undefined
         )
       ).then(
         () => {
 
           // 3. 此时 store 中充满了该路由下对应的数据, 将数据挂载到 context 上
-          context.state = store.state;
+          // context.state = store.state;
+          console.log(context.state);
           resolve(app);
 
-        }, reject
-      );
+        },
+        reject
+      )
 
     }, reject);
 

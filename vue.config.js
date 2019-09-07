@@ -4,6 +4,7 @@ const VueSSRClientPlugin = require('vue-server-renderer/client-plugin');
 // const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
 module.exports = {
+  publicPath: '/public',
   configureWebpack: (config) => {
 
     if (process.env.BUNDLE_TARGET === 'CLIENT') {
@@ -52,7 +53,7 @@ module.exports = {
         // 并生成较小的 bundle 文件。
         // 就是排除掉 node_modules 那些可以被 node 读取不需要被打包的内容
         externals: webpackNodeExternals({
-          whitelist: /\.(?!(?:jsx?|json)$).{1,5}$/i // 除了 .js .jsx .json 都需要被 webpack 处理
+          whitelist: [/\.(?!(?:jsx?|json)$).{1,5}$/i] // 除了 .js .jsx .json 都需要被 webpack 处理
         }),
         // 这是将服务器的整个输出
         // 构建为单个 JSON 文件的插件。
@@ -64,6 +65,19 @@ module.exports = {
     }
 
     throw new Error(`can't found BUNDLE_TARGET env that should exist in a file which named .env.client or .env.server on project-root`);
+
+  },
+  chainWebpack: config => {
+
+    config.module
+      .rule("vue")
+      .use("vue-loader")
+      .tap(options => {
+        options = {
+          ...options,
+          optimizeSSR: false
+        }
+      });
 
   }
 }

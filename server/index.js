@@ -1,7 +1,8 @@
 // only running in node side
 const fs = require('fs');
 const path = require('path');
-const App = require("express")();
+const Express = require("express");
+const App = Express();
 
 const serverBundle = require('../dist/vue-ssr-server-bundle.json');
 const clientManifest = require('../dist/vue-ssr-client-manifest.json');
@@ -13,10 +14,23 @@ const renderer = createBundleRenderer(serverBundle, {
   clientManifest
 });
 
+App.use(
+  '/public',
+  Express.static(path.join(__dirname, '..', 'dist'))
+);
+
 App.get('*', (request, response) => {
 
   renderer
-    .renderToString({ url: request.url })
+    .renderToString({
+      url: request.url,
+      title: 'hello world',
+      meta: `
+      <meta name="keywords" content="hello world">
+      <meta name="author" content="zhao">
+      <meta name="description" content="a page renderer by SSR">
+      `
+    })
     .then(html => {
       response.setHeader('Content-Type', 'text/html; charset=utf-8');
       response.end(html);
