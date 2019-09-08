@@ -9,7 +9,7 @@ export function createRouter () {
     mode: 'history',
     routes: [
       {
-        path:'/',
+        path:'/:id',
         component:Index
       }
     ]

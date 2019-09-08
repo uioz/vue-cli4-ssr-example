@@ -13,7 +13,6 @@ export default (context) => new Promise((resolve, reject) => {
 
       // 1. 获取匹配到的组件组成的数组 [components,components,....]
       const matchedComponents = router.getMatchedComponents()
-      console.log(matchedComponents.length);
       if (!matchedComponents.length) {
         return reject({ code: 404 })
       }
@@ -28,7 +27,7 @@ export default (context) => new Promise((resolve, reject) => {
 
           // 3. 此时 store 中充满了该路由下对应的数据, 将数据挂载到 context 上
           // context.state = store.state;
-          console.log(context.state);
+          console.log(store.state);
           resolve(app);
 
         },
