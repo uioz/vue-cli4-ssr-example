@@ -1,46 +1,48 @@
-// only running in node side
-const fs = require('fs');
-const path = require('path');
-const Express = require("express");
-const App = Express();
+const express = require('express')
 
-const serverBundle = require('../dist/vue-ssr-server-bundle.json');
-const clientManifest = require('../dist/vue-ssr-client-manifest.json');
-const { createBundleRenderer } = require('vue-server-renderer');
+const Server = express();
+
+const serverBundle = require('../dist/server/vue-ssr-server-bundle.json');
+const clientManifest = require('../dist/client/vue-ssr-client-manifest.json');
+
+const template = require("fs").readFileSync('/home/zhao/文档/vue-ssr/server/template/template.html', 'utf8');
+
+const { createBundleRenderer } = require("vue-server-renderer");
 
 const renderer = createBundleRenderer(serverBundle, {
-  runInNewContext: false,
-  template: fs.readFileSync(path.join(__dirname, 'template.html'), 'utf8'),
+  runInNewContext: false, // 推荐
+  template,
   clientManifest
 });
 
-App.use(
-  '/public',
-  Express.static(path.join(__dirname, '..', 'dist'))
+Server.get('*',
+  (request, response, next) => {
+
+    const context = {
+      url: request.url
+    };
+
+    renderer.renderToString(context,
+      (error, html) => {
+
+        if (error) {
+          console.log(request.url);
+          console.error(error);
+          debugger;
+          next();
+        }else{
+          response.end(html);
+        }
+
+      }
+    );
+
+  },
+  express.static('/home/zhao/文档/vue-ssr/dist/client')
 );
 
-App.get('*', (request, response) => {
-
-  renderer
-    .renderToString({
-      url: request.url,
-      title: 'hello world',
-      meta: `
-      <meta name="keywords" content="hello world">
-      <meta name="author" content="zhao">
-      <meta name="description" content="a page renderer by SSR">
-      `
-    })
-    .then(html => {
-      response.setHeader('Content-Type', 'text/html; charset=utf-8');
-      response.end(html);
-    })
-    .catch(error => {
-      console.log(error);
-      response.status(500).end('Internal Server Error')
-    });
-
-});
-
-
-App.listen(8888, console.log(`server is listening port at 8888`));
+Server.listen(8888,
+  () => {
+    console.log('server listening with 8888 port');
+  }
+)

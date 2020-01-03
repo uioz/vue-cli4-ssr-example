@@ -1,31 +1,22 @@
-// store.js
-import Vue from 'vue';
-import Vuex from 'vuex';
-
-Vue.use(Vuex);
-
-function delay(delay) {
-  return new Promise(resolve => setTimeout(resolve, delay));
-}
-
-export function createStore() {
-  return new Vuex.Store({
-    state: {
-      items: {}
+export const store = {
+  state: {
+    userInfo:undefined
+  },
+  mutations: {
+    clearUserInfo(state){
+      state.userInfo = undefined;
     },
-    actions: {
-      async fetchItem({ commit }, id) {
-        // `store.dispatch()` 会返回 Promise，
-        // 以便我们能够知道数据在何时更新
-        await delay(1000);// 模拟异步请求
-        commit('setItem', { id, item: 'hello world' });
-
-      }
-    },
-    mutations: {
-      setItem(state, { id, item }) {
-        Vue.set(state.items, id, item);
-      }
+    setUserInfo(state,userInfo){
+      state.userInfo = userInfo;
     }
-  });
+  },
+  actions: {
+    fetchUserInfo({commit},{id,url}){
+      
+      return new Promise((resolve) => setTimeout(() => {
+        commit('setUserInfo',[1,2,3,id,url])
+        resolve();
+      }, 1000))
+    }
+  },
 }

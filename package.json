@@ -4,55 +4,31 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint",
-    "build:client": "vue-cli-service build --no-clean --mode client",
-    "build:server": "vue-cli-service build --no-clean --mode server",
-    "serve:client": "vue-cli-service serve --mode client",
-    "serve:server": "vue-cli-service serve --mode server",
-    "lint:client": "vue-cli-service lint --mode client",
-    "lint:server": "vue-cli-service lint --mode server"
+    "build:client": "vue-cli-service build",
+    "build:server": "vue-cli-service build --mode server",
+    "build:all":"npm run build:client && npm run build:server",
+    "lint": "vue-cli-service lint"
   },
   "dependencies": {
-    "core-js": "^2.6.5",
+    "core-js": "^3.4.4",
     "express": "^4.17.1",
-    "vue": "^2.6.10",
+    "vue": "^2.6.11",
     "vue-router": "^3.1.3",
-    "vue-server-renderer": "^2.6.10",
-    "vuex": "^3.1.1"
-  },
-  "devDependencies": {
-    "@vue/cli-plugin-babel": "^3.11.0",
-    "@vue/cli-plugin-eslint": "^3.11.0",
-    "@vue/cli-service": "^3.11.0",
-    "babel-eslint": "^10.0.1",
-    "eslint": "^5.16.0",
-    "eslint-plugin-vue": "^5.0.0",
-    "uglifyjs-webpack-plugin": "^2.2.0",
-    "vue-template-compiler": "^2.6.10",
+    "vue-server-renderer": "^2.6.11",
+    "vuex": "^3.1.2",
     "webpack-node-externals": "^1.7.2"
   },
-  "eslintConfig": {
-    "root": true,
-    "env": {
-      "node": true
-    },
-    "extends": [
-      "plugin:vue/essential",
-      "eslint:recommended"
-    ],
-    "rules": {},
-    "parserOptions": {
-      "parser": "babel-eslint"
-    }
-  },
-  "postcss": {
-    "plugins": {
-      "autoprefixer": {}
-    }
-  },
-  "browserslist": [
-    "> 1%",
-    "last 2 versions"
-  ]
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "^4.1.0",
+    "@vue/cli-plugin-eslint": "^4.1.0",
+    "@vue/cli-plugin-router": "^4.1.0",
+    "@vue/cli-plugin-vuex": "^4.1.0",
+    "@vue/cli-service": "^4.1.0",
+    "babel-eslint": "^10.0.3",
+    "eslint": "^5.16.0",
+    "eslint-plugin-vue": "^5.0.0",
+    "sass": "^1.23.7",
+    "sass-loader": "^8.0.0",
+    "vue-template-compiler": "^2.6.10"
+  }
 }
