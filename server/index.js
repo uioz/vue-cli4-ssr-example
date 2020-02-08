@@ -38,7 +38,9 @@ Server.get('*',
     );
 
   },
-  express.static('/home/zhao/文档/vue-ssr/dist/client')
+  express.static('C:\\Users\\zhao\\Documents\\vue-ssr\\dist\\client',{
+    index:false
+  })
 );
 
 Server.listen(8888,
