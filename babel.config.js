@@ -7,6 +7,7 @@ function runInProduction() {
   return process.env.NODE_ENV === 'production';
 }
 
+// Our goal is remove unnecessary polyfills when running in node
 if (targetIsServer() && runInProduction()) {
   module.exports = {
     // see https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/babel-preset-app#options

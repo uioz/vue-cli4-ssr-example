@@ -25,39 +25,27 @@ function runInProduction() {
   return process.env.NODE_ENV === 'production';
 }
 
-if (runInProduction() && (buildForClient() || buildForServer())) {
-
-  baseConfig = merge(baseConfig, {
-    css: {
-      // to disabled mini-css-extract-plugin for production
-      // see https://github.com/webpack-contrib/mini-css-extract-plugin/issues/90
-      extract: false
-    },
-    configureWebpack: {
-      optimization: {
-        splitChunks: false
-      },
-    }
-  });
-
-}
-
 if (buildForClient() && runInProduction()) {
 
   const VueSSRClientPlugin = require('vue-server-renderer/client-plugin');
 
   baseConfig = merge(baseConfig, {
     outputDir: './dist/client',
+    css: {
+      // see https://github.com/vuejs/vue/issues/9194#issuecomment-473873303
+      // to get why set sourceMap to true
+      // possible reason https://github.com/vuejs/vue/issues/9488#issuecomment-514985110
+      sourceMap: true,
+    },
     configureWebpack: {
       entry: './src/entry-client.js',
       target: 'web',
-      // 分离 runtime 
-      // optimization: {
-      //   splitChunks: false
-      // runtimeChunk: {
-      //   name:'manifest'
-      // }
-      // },
+      optimization: {
+        // see https://ssr.vuejs.org/guide/build-config.html#client-config
+        runtimeChunk: {
+          name: 'manifest'
+        }
+      },
       plugins: [
         new VueSSRClientPlugin()
       ]
@@ -73,6 +61,11 @@ if (buildForServer() && runInProduction()) {
 
   baseConfig = merge(baseConfig, {
     outputDir: './dist/server',
+    css: {
+      // to disabled mini-css-extract-plugin in production
+      // see https://github.com/webpack-contrib/mini-css-extract-plugin/issues/90
+      extract: false
+    },
     configureWebpack: {
       entry: './src/entry-server.js',
       // 这允许 webpack 以 Node 适用方式(Node-appropriate fashion)处理动态导入(dynamic import)，
@@ -90,13 +83,31 @@ if (buildForServer() && runInProduction()) {
       externals: nodeExternalsNode({
         whitelist: [/\.css$/, /\?vue&type=style/]
       }),
-      // 关闭 splitChunks 
-      // optimization: {
-      //   splitChunks: false
-      // },
+      // see https://ssr.vuejs.org/guide/build-config.html#client-config
+      // this is reason why to disalbe splitChunks
+      optimization: {
+        splitChunks: false
+      },
       plugins: [
         new VueSSRServerPlugin()
       ]
+    },
+    chainWebpack: config => {
+      const langs = ["css", "postcss", "scss", "sass", "less", "stylus"];
+      const types = ["vue-modules", "vue", "normal-modules", "normal"];
+      for (const lang of langs) {
+        for (const type of types) {
+          try {
+            let rule;
+            console.warn(rule = config.module.rule(lang).oneOf(type));
+            rule.clear().use('null-loader');
+            
+          } catch (error) {
+            console.warn(error);
+            
+          }
+        }
+      }
     }
   });
 }
