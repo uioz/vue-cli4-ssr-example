@@ -93,19 +93,19 @@ if (buildForServer() && runInProduction()) {
       ]
     },
     chainWebpack: config => {
+
+      // we will get two styles inline and from link if build straight
+      // therefore we remove loader about style
+      // code from https://github.com/ediaos/vue-cli3-ssr-project/blob/master/vue.config.js#L111 
+      // see https://github.com/webpack-contrib/mini-css-extract-plugin/issues/90#issuecomment-380796867
+      // reason see https://github.com/vuejs/vue-ssr-docs/issues/196#issuecomment-520317135
       const langs = ["css", "postcss", "scss", "sass", "less", "stylus"];
       const types = ["vue-modules", "vue", "normal-modules", "normal"];
       for (const lang of langs) {
         for (const type of types) {
-          try {
-            let rule;
-            console.warn(rule = config.module.rule(lang).oneOf(type));
-            rule.clear().use('null-loader');
-            
-          } catch (error) {
-            console.warn(error);
-            
-          }
+          let rule = config.module.rule(lang).oneOf(type)
+          rule.uses.clear();
+          rule.use().loader('null-loader');
         }
       }
     }
