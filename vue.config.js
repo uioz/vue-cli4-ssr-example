@@ -2,8 +2,6 @@ const merge = require("lodash.merge");
 
 let baseConfig = {
   outputDir: undefined,
-  // assetsDir: undefined,
-  // publicPath:'/static',
   configureWebpack: {
     // 默认执行 npm run serve 和 npm run build 进行单页面打包 
     // 但是已经不是默认 vue-cli 的 src/main.js 这里提提供了默认入口
@@ -31,11 +29,13 @@ if (buildForClient() && runInProduction()) {
 
   baseConfig = merge(baseConfig, {
     outputDir: './dist/client',
+    productionSourceMap: process.env.SOURCE_MAP === 'true',
     css: {
+      sourceMap: process.env.SOURCE_MAP === 'true',
       // see https://github.com/vuejs/vue/issues/9194#issuecomment-473873303
       // to get why set sourceMap to true
       // possible reason https://github.com/vuejs/vue/issues/9488#issuecomment-514985110
-      sourceMap: true,
+      // sourceMap: true,
     },
     configureWebpack: {
       entry: './src/entry-client.js',
@@ -61,6 +61,7 @@ if (buildForServer() && runInProduction()) {
 
   baseConfig = merge(baseConfig, {
     outputDir: './dist/server',
+    productionSourceMap: process.env.SOURCE_MAP === 'true',
     css: {
       // to disabled mini-css-extract-plugin in production
       // see https://github.com/webpack-contrib/mini-css-extract-plugin/issues/90
@@ -73,7 +74,7 @@ if (buildForServer() && runInProduction()) {
       // 告知 `vue-loader` 输送面向服务器代码(server-oriented code)。
       target: 'node',
       // 对 bundle renderer 提供 source map 支持
-      devtool: 'source-map',
+      // devtool: 'source-map',
       // 此处告知 server bundle 使用 Node 风格导出模块(Node-style exports)
       output: {
         libraryTarget: 'commonjs2'
@@ -94,8 +95,8 @@ if (buildForServer() && runInProduction()) {
     },
     chainWebpack: config => {
 
-      // we will get two styles inline and from link if build straight
-      // therefore we remove loader about style
+      // we will get two styles inline and from link when running if build straight
+      // therefore we remove loader about inline style and keeping link
       // code from https://github.com/ediaos/vue-cli3-ssr-project/blob/master/vue.config.js#L111 
       // see https://github.com/webpack-contrib/mini-css-extract-plugin/issues/90#issuecomment-380796867
       // reason see https://github.com/vuejs/vue-ssr-docs/issues/196#issuecomment-520317135
