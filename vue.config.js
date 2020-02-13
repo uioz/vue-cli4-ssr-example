@@ -19,19 +19,29 @@ function buildForServer() {
   return process.env.BUILD_TARGET === 'SERVER';
 }
 
+function buildForRenderer(params) {
+  // env from .env.dev file
+  return process.env.BUILD_TARGET === 'RENDERER';
+}
+
 function runInProduction() {
   return process.env.NODE_ENV === 'production';
 }
 
-if (buildForClient() && runInProduction()) {
+function runInDevelopment() {
+  return process.env.NODE_ENV === 'development';
+}
+
+
+if (buildForClient() && (runInDevelopment() || runInProduction())) {
 
   const VueSSRClientPlugin = require('vue-server-renderer/client-plugin');
 
   baseConfig = merge(baseConfig, {
     outputDir: './dist/client',
-    productionSourceMap: process.env.SOURCE_MAP === 'true',
+    productionSourceMap: runInDevelopment(),
     css: {
-      sourceMap: process.env.SOURCE_MAP === 'true',
+      sourceMap: runInDevelopment(),
       // see https://github.com/vuejs/vue/issues/9194#issuecomment-473873303
       // to get why set sourceMap to true
       // possible reason https://github.com/vuejs/vue/issues/9488#issuecomment-514985110
@@ -54,14 +64,14 @@ if (buildForClient() && runInProduction()) {
 
 }
 
-if (buildForServer() && runInProduction()) {
+if (buildForServer() && (runInDevelopment() || runInProduction())) {
 
   const VueSSRServerPlugin = require('vue-server-renderer/server-plugin');
   const nodeExternalsNode = require('webpack-node-externals');
 
   baseConfig = merge(baseConfig, {
     outputDir: './dist/server',
-    productionSourceMap: process.env.SOURCE_MAP === 'true',
+    productionSourceMap: runInDevelopment(),
     css: {
       // to disabled mini-css-extract-plugin in production
       // see https://github.com/webpack-contrib/mini-css-extract-plugin/issues/90
@@ -109,6 +119,36 @@ if (buildForServer() && runInProduction()) {
           rule.use().loader('null-loader');
         }
       }
+    }
+  });
+}
+
+// 这个模式是 spa + 输出 vue-ssr-client-manifest.json 的版本.
+if (buildForRenderer() && runInDevelopment()) {
+  const VueSSRClientPlugin = require('vue-server-renderer/client-plugin');
+
+  baseConfig = merge(baseConfig, {
+    outputDir: './dist/client',
+    productionSourceMap: true,
+    css: {
+      sourceMap: true,
+      // see https://github.com/vuejs/vue/issues/9194#issuecomment-473873303
+      // to get why set sourceMap to true
+      // possible reason https://github.com/vuejs/vue/issues/9488#issuecomment-514985110
+      // sourceMap: true,
+    },
+    configureWebpack: {
+      entry: './src/entry-client.js',
+      target: 'web',
+      optimization: {
+        // see https://ssr.vuejs.org/guide/build-config.html#client-config
+        runtimeChunk: {
+          name: 'manifest'
+        }
+      },
+      plugins: [
+        new VueSSRClientPlugin()
+      ]
     }
   });
 }

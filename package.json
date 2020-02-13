@@ -4,11 +4,15 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build ",
+    "build": "vue-cli-service build",
     "build:client": "vue-cli-service build --mode client",
     "build:server": "vue-cli-service build --mode server",
+    "build:client-dev": "vue-cli-service build --mode client-dev",
+    "build:server-dev": "vue-cli-service build --mode server-dev",
     "build:all": "npm run build:client && npm run build:server",
-    "build:sourcemap": "cross-env SOURCE_MAP=true npm run build:all",
+    "build:all-dev": "npm run build:client-dev && npm run build:server-dev",
+    "serve:renderer": "vue-cli-service serve --mode dev",
+    "dev": "cross-env BUILD_TARGET=SERVER NODE_ENV=development node ./server/dev",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
@@ -31,9 +35,11 @@
     "eslint": "^5.16.0",
     "eslint-plugin-vue": "^5.0.0",
     "lodash.merge": "^4.6.2",
+    "memory-fs": "^0.5.0",
     "null-loader": "^3.0.0",
     "sass": "^1.25.0",
     "sass-loader": "^8.0.2",
-    "vue-template-compiler": "^2.6.10"
+    "vue-template-compiler": "^2.6.10",
+    "webpack": "^4.41.6"
   }
 }

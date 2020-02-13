@@ -31,23 +31,22 @@ npm run lint
 
 ## 开发模式
 
-用于服务端渲染的开发模式:
-```
-npm run serve:renderer
-```
+| 命令 | 输出 | 使用说明 |
+| ---- | ---- | -------- |
+| `serve:renderer` | devServer + manifest.json | dev 模式的前置模式, 其目的是在开启 devServer 的同时输出 manifest.json |
+| dev | Server + `serve:renderer` | 开发模式, 在此模式下会启动开发服务器和热更新服务器 |
 
 ## 构建模式
 
-用于构建适用于服务端渲染的代码:
-```
-npm run build:client // 构建客户端
-npm run build:server // 打包服务端
-npm run build:all // 打包两者
-```
-以及:
-```
-npm run build:sourcemap // 相当于 build:all 的具有 source-map 的版本.
-```
+| 命令 | 说明 |
+| ---- | ---- |
+| `build:client` | 以生产模式构建客户端代码 |
+| `build:server` | 以生产模式构建服务端代码 |
+| `build:client-dev` | 构建客户端代码并且输出 sourceMap |
+| `build:server-dev` | 构建服务端代码并且输出 sourceMap |
+| `build:all` | 以生产模式构建 |
+| `build:all-dev` | 以开发模式构建 |
+
 
 # 依赖说明
 
