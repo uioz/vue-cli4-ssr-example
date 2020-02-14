@@ -1,4 +1,6 @@
-# vue-ssr
+# 简介
+
+基于 vue-cli4 的服务端渲染示例
 
 a server side renderer example of vue based on vue-cli4. 
 
