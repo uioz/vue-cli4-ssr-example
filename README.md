@@ -2,6 +2,12 @@
 
 a server side renderer example of vue based on vue-cli4. 
 
+# 运行
+
+```
+npm run dev
+```
+
 # 目录说明
 
 目录分为两个部分:
@@ -19,16 +25,16 @@ a server side renderer example of vue based on vue-cli4.
 
 # 命令说明
 
-## spa 模式
+## 用于 spa
 
-这个模式和 vue-cli 完全一致你可以执行:
+和 vue-cli 提供的命令一致:
 ```
 npm run serve
 npm run build
 npm run lint
 ```
 
-## 开发模式
+## 开发
 
 | 命令 | 输出 | 使用说明 |
 | ---- | ---- | -------- |
@@ -42,7 +48,7 @@ npm run lint
 
 当请求到达渲染服务器后, 渲染页面依赖 `vue-ssr-server-bundle.json` 以及 `vue-ssr-client-manifest.json` 文件, `vue-ssr-server-bundle.json` 已经给出, `vue-ssr-client-manifest.json` 则会通过请求 devServer(即 3000 端口) 来获取, 利用这两个文件编译然后返回编译后的 HTML 文件.
 
-## 构建模式
+## 构建
 
 | 命令 | 说明 |
 | ---- | ---- |
@@ -53,7 +59,7 @@ npm run lint
 | `build:all` | 以生产模式构建 |
 | `build:all-dev` | 以开发模式构建 |
 
-## 运行模式
+## 运行
 
 **注意**: 该模式下的代码仅用于测试, 入口文件位于 `server/index.js`.
 
