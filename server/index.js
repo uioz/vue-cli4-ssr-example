@@ -1,11 +1,12 @@
-const express = require('express')
-
+const express = require('express');
 const Server = express();
+
+const path = require('path');
 
 const serverBundle = require('../dist/server/vue-ssr-server-bundle.json');
 const clientManifest = require('../dist/client/vue-ssr-client-manifest.json');
 
-const template = require("fs").readFileSync(`C:\\Users\\zhao\\Documents\\vue-ssr\\server\\template\\template.html`, 'utf8');
+const template = require("fs").readFileSync(path.resolve(__dirname, '../src/template.html'), 'utf8');
 
 const { createBundleRenderer } = require("vue-server-renderer");
 
@@ -28,7 +29,6 @@ Server.get('*',
         if (error) {
           console.log(request.url);
           console.error(error);
-          debugger;
           next();
         } else {
           response.end(html);
@@ -38,13 +38,16 @@ Server.get('*',
     );
 
   },
-  express.static('C:\\Users\\zhao\\Documents\\vue-ssr\\dist\\client', {
+  express.static(path.resolve(__dirname, '../dist/client'), {
+    // 不返回 index.html 因为需要由服务端渲染
     index: false
   })
 );
 
-Server.listen(8888,
+const { rendererServerPort } = require('../config');
+
+Server.listen(rendererServerPort,
   () => {
-    console.log('server listening with 8888 port');
+    console.log('server listening on 8888 port');
   }
 )

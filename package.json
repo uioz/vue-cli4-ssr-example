@@ -12,7 +12,8 @@
     "build:all": "npm run build:client && npm run build:server",
     "build:all-dev": "npm run build:client-dev && npm run build:server-dev",
     "serve:renderer": "vue-cli-service serve --mode dev",
-    "dev": "cross-env BUILD_TARGET=SERVER NODE_ENV=development node ./server/dev",
+    "dev": "concurrently \"cross-env BUILD_TARGET=SERVER NODE_ENV=development node ./server/dev\" \"npm run serve:renderer\"",
+    "start":"node ./server/index",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
@@ -31,6 +32,7 @@
     "@vue/cli-plugin-vuex": "^4.1.0",
     "@vue/cli-service": "^4.1.0",
     "babel-eslint": "^10.0.3",
+    "concurrently": "^5.1.0",
     "cross-env": "^7.0.0",
     "eslint": "^5.16.0",
     "eslint-plugin-vue": "^5.0.0",

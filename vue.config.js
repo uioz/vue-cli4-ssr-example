@@ -19,7 +19,7 @@ function buildForServer() {
   return process.env.BUILD_TARGET === 'SERVER';
 }
 
-function buildForRenderer(params) {
+function buildForRenderer() {
   // env from .env.dev file
   return process.env.BUILD_TARGET === 'RENDERER';
 }
@@ -126,16 +126,16 @@ if (buildForServer() && (runInDevelopment() || runInProduction())) {
 // 这个模式是 spa + 输出 vue-ssr-client-manifest.json 的版本.
 if (buildForRenderer() && runInDevelopment()) {
   const VueSSRClientPlugin = require('vue-server-renderer/client-plugin');
+  const { devServerPort } = require('./config');
 
   baseConfig = merge(baseConfig, {
     outputDir: './dist/client',
     productionSourceMap: true,
     css: {
+      see https://github.com/vuejs/vue/issues/9194#issuecomment-473873303
+      to get why set sourceMap to true
+      possible reason https://github.com/vuejs/vue/issues/9488#issuecomment-514985110
       sourceMap: true,
-      // see https://github.com/vuejs/vue/issues/9194#issuecomment-473873303
-      // to get why set sourceMap to true
-      // possible reason https://github.com/vuejs/vue/issues/9488#issuecomment-514985110
-      // sourceMap: true,
     },
     configureWebpack: {
       entry: './src/entry-client.js',
@@ -149,7 +149,12 @@ if (buildForRenderer() && runInDevelopment()) {
       plugins: [
         new VueSSRClientPlugin()
       ]
-    }
+    },
+    devServer: {
+      port: devServerPort,
+      headers: { 'Access-Control-Allow-Origin': '*' }
+    },
+    publicPath: 'http://localhost:' + devServerPort
   });
 }
 
