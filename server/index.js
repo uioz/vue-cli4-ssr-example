@@ -48,6 +48,6 @@ const { rendererServerPort } = require('../config');
 
 Server.listen(rendererServerPort,
   () => {
-    console.log('server listening on 8888 port');
+    console.log(`server listening on ${rendererServerPort} port`);
   }
 )

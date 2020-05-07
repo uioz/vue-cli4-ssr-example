@@ -7,7 +7,7 @@ Vue.use(VueRouter)
 /**
  * 以工厂模式创建一个 router 实例
  */
-export function craeteRouter() {
+export function createRouter() {
   return new VueRouter({
     mode: 'history',
     base: process.env.BASE_URL,

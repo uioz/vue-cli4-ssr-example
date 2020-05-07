@@ -132,10 +132,10 @@ if (buildForRenderer() && runInDevelopment()) {
     outputDir: './dist/client',
     productionSourceMap: true,
     css: {
-      see https://github.com/vuejs/vue/issues/9194#issuecomment-473873303
-      to get why set sourceMap to true
-      possible reason https://github.com/vuejs/vue/issues/9488#issuecomment-514985110
-      sourceMap: true,
+      // see https://github.com/vuejs/vue/issues/9194#issuecomment-473873303
+      // to get why set sourceMap to true
+      // possible reason https://github.com/vuejs/vue/issues/9488#issuecomment-514985110
+      // sourceMap: true,
     },
     configureWebpack: {
       entry: './src/entry-client.js',

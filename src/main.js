@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import AppVue from './App.vue'
-import { craeteRouter } from './router'
+import { createRouter } from './router'
 import { createStore } from './store'
 
 Vue.config.productionTip = false
@@ -10,7 +10,7 @@ Vue.config.productionTip = false
  */
 export function createApp() {
 
-  const router = craeteRouter();
+  const router = createRouter();
   const store = createStore();
 
   const App = new Vue({
